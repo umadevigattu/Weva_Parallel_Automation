@@ -45,7 +45,7 @@ public class ParallelTest extends SeleniumUtilities {
 		WebElement homepage = getDriver().findElement(By.xpath("//a[text()='Find a Doctor']"));
 		if (homepage.isDisplayed() == true) {
 
-			softassert.assertEquals(homepage.getText(), "Find a Docto");
+			softassert.assertEquals(homepage.getText(), "Find a Doctor");
 			System.out.println("execution 2 " + Thread.currentThread().getId() + "Passed");
 			getScreenshot(getDriver(), "Find a Doctor_screen");
 
@@ -60,7 +60,7 @@ public class ParallelTest extends SeleniumUtilities {
 	public void test3() throws Exception {
 		Weva_login();
 		Thread.sleep(3000);
-		WebElement homepage = getDriver().findElement(By.xpath("//a[text()='Find a Docto']"));
+		WebElement homepage = getDriver().findElement(By.xpath("//a[text()='Find a Doctor']"));
 		if (homepage.isDisplayed() == true) {
 			System.out.println("execution  3" + Thread.currentThread().getId() + "Passed");
 			softassert.assertEquals(homepage.getText(), "Find a Doctor");
