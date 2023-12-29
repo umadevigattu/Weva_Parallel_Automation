@@ -1,0 +1,32 @@
+var lastRequest = Date.now();
+
+function googleAuthRender() {
+    google.accounts.id.initialize({
+        client_id: document.getElementById("siteinfo").dataset.googleclient,
+        callback: googleAuth0
+    });
+    google.accounts.id.renderButton(
+        document.getElementById('google-auth-gsi'),
+        {theme: 'outline', size: 'large'}
+    );
+    google.accounts.id.prompt();
+}
+
+function googleAuth0(response) {
+    if (Date.now() - lastRequest > 1000) {
+        Site.POST("/api/v1/user/google/gsi", {
+            code: response.credential
+        }, function (state) {
+            if (state.readyState == 4 && state.status == 200) {
+                window.location.reload();
+            }
+        });
+    }
+    lastRequest = Date.now();
+}
+
+window.addEventListener("load", (event) => {
+    if (document.getElementById("siteinfo").dataset.googleloading == "1") {
+        googleAuthRender();
+    }
+});
