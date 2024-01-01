@@ -8,14 +8,9 @@ import java.util.Properties;
 
 import org.Weva.constants.Constants;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Basetest {
 
