@@ -19,7 +19,7 @@ public class ExtentTestReports
 	{
 		sparkReporter = new ExtentSparkReporter(Constants.TestReportsPath);
 		try {
-			sparkReporter.loadXMLConfig("C:\\Users\\91944\\eclipse-workspace\\Weva_parallel\\extent-config.xml");
+			sparkReporter.loadXMLConfig(System.getProperty("user.dir") + "\\extent-config.xml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
