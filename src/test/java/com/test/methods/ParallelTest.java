@@ -33,7 +33,7 @@ public class ParallelTest extends SeleniumUtilities {
 		if (homepage.isDisplayed() == true) {
 			softassert.assertEquals(homepage.getText(), "Find a Doctor");
 			getScreenshot(getDriver(), "Login_Pass");
-			System.out.println("execution first 1 " + Thread.currentThread().getId() + "Passed");
+			System.out.println("Valid_UserName_Valid_Password " + Thread.currentThread().getId() + "Passed");
 
 		}
 		softassert.assertAll();
