@@ -58,12 +58,12 @@ public class SeleniumUtilities extends Basetest implements IDriverFactory {
 		getDriver().get(properties.getProperty("Weva_Url"));
 		getDriver().manage().window().maximize();
 		Thread.sleep(Constants.SHORT_WAIT);
-		extentTest.info("Enter valid Username as " + username);
+		extentTest.info("Enter"+username+" as Username " );
 		EnterText("email", LocatorType.name, username);
-		extentTest.info("Entered valid Username as " + username);
-		extentTest.info("Enter valid Password as " + username);
+		extentTest.info("Entered"+username+" as Username " );
+		extentTest.info("Enter"+password+" as Password " );
 		EnterText("password", LocatorType.name, password);
-		extentTest.info("Entered valid Password as " + username);
+		extentTest.info("Enter"+password+" as Password " );
 		Thread.sleep(Constants.SHORT_WAIT);
 		extentTest.info("Click on Login button");
 		Click("//button[@type='submit']", LocatorType.xpath);
