@@ -1,13 +1,18 @@
 package com.weva.common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.Weva.constants.Constants;
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -21,11 +26,9 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class SeleniumUtilities extends Basetest implements IDriverFactory {
 	protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-	/*
-	 * @BeforeMethod public void setUp() { CreateWebDriver(BrowserType.chrome);
-	 * 
-	 * }
-	 */
+
+	static String username = "";
+	static String password = "";
 
 	public WebDriver getDriver() {
 		return (WebDriver) driver.get();
@@ -51,16 +54,54 @@ public class SeleniumUtilities extends Basetest implements IDriverFactory {
 		FindElement(element, locatorType).sendKeys(value);
 	}
 
-	public void Weva_login() throws Exception {
+	public void Weva_login(String username,String password) throws Exception {
 		getDriver().get(properties.getProperty("Weva_Url"));
-		Thread.sleep(6000);
-		extentTest.info("Enter valid username as " + properties.getProperty("username"));
-		EnterText("email", LocatorType.name, "sirishapatient@yopmail.com");
-		extentTest.info("Enter valid username as " + properties.getProperty("username"));
-		getDriver().findElement(By.name("password")).sendKeys("Test@1234");
-		getDriver().findElement(By.xpath("//button[@type='submit']")).click();
-		Thread.sleep(6000);
+		getDriver().manage().window().maximize();
+		Thread.sleep(Constants.SHORT_WAIT);
+		extentTest.info("Enter valid Username as " + username);
+		EnterText("email", LocatorType.name, username);
+		extentTest.info("Entered valid Username as " + username);
+		extentTest.info("Enter valid Password as " + username);
+		EnterText("password", LocatorType.name, password);
+		extentTest.info("Entered valid Password as " + username);
+		Thread.sleep(Constants.SHORT_WAIT);
+		extentTest.info("Click on Login button");
+		Click("//button[@type='submit']", LocatorType.xpath);
+		Thread.sleep(Constants.SHORT_WAIT);
+		extentTest.info("Clicked on Login button");
 
+	}
+	
+	
+
+	public void WevaLogin_muliple() throws Exception {
+		
+		FileInputStream fis = new FileInputStream(Constants.LoginTestData);
+		XSSFWorkbook workbook = new XSSFWorkbook(fis);
+
+		Sheet sheet = workbook.getSheetAt(0);
+		int lastRow = sheet.getLastRowNum();
+		for (int rownum = 1; rownum <= sheet.getLastRowNum(); rownum++) {
+			CreateWebDriver(BrowserType.chrome);
+			ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+			getDriver().get(properties.getProperty("Weva_Url"));
+			CommonUtils.ExcelReader();
+
+			Row row = sheet.getRow(rownum);
+			username = row.getCell(0).getStringCellValue();
+			extentTest.info("username is " + row.getCell(0).getStringCellValue());
+			password = row.getCell(1).getStringCellValue();
+			extentTest.info("Password is " + row.getCell(1).getStringCellValue());
+			EnterText("//input[@name='email']", LocatorType.xpath, username);
+			extentTest.info("User Entered Username as " + row.getCell(0).getStringCellValue());
+			EnterText("//input[@name='password']", LocatorType.xpath, password);
+			extentTest.info("User Entered Password as " + row.getCell(1).getStringCellValue());
+			Click("//button[text()='Sign in']", LocatorType.xpath);
+			extentTest.info("User Clicked on Submit");
+			Thread.sleep(Constants.MEDIUM_WAIT);
+			CloseWindow();
+			extentTest.info("User Logged in Successfully");
+		}
 	}
 
 	public void EnterText(String element, LocatorType locatorType, String value) {
