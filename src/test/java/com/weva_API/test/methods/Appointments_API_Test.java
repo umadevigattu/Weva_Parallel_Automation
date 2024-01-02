@@ -14,7 +14,6 @@ import io.restassured.specification.RequestSpecification;
 public class Appointments_API_Test {
 	@Test
 	public void appointments_get_API_Validation_test() {
-		
 		RequestSpecification request = RestAssured.given();
 		request.baseUri(Constants.BaseURI);
 		Response response = request.given().auth().preemptive().oauth2(Constants.BearerToken).param("pageNumber", "1")
