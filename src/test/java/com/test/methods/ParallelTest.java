@@ -1,15 +1,21 @@
 package com.test.methods;
 
+import java.io.IOException;
+
 import org.checkerframework.common.reflection.qual.GetMethod;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.weva.common.SeleniumUtilities;
+
+import groovyjarjarantlr4.v4.misc.EscapeSequenceParsing.Result;
 
 @Listeners(com.weva.common.ExtentReportListeners.class)
 public class ParallelTest extends SeleniumUtilities {
@@ -32,7 +38,7 @@ public class ParallelTest extends SeleniumUtilities {
 		WebElement homepage = getDriver().findElement(By.xpath("//a[text()='Find a Doctor']"));
 		if (homepage.isDisplayed() == true) {
 			softassert.assertEquals(homepage.getText(), "Find a Doctor");
-			getScreenshot(getDriver(), "Login_Pass");
+			getScreenshot(getDriver(), "Valid_UserName_Valid_Password_Pass");
 			System.out.println("Valid_UserName_Valid_Password " + Thread.currentThread().getId() + "Passed");
 
 		}
@@ -83,11 +89,9 @@ public class ParallelTest extends SeleniumUtilities {
 
 			softassert.assertEquals(homepage.getText(), "Find a Doctor");
 			System.out.println("execution 2 " + Thread.currentThread().getId() + "Passed");
-			getScreenshot(getDriver(), "Find a Doctor_screen");
+			getScreenshot(getDriver(), "Validate_Invalid_Xapth_Passed");
 
-		} else {
-			getScreenshot(getDriver(), "Find a Doctor_screen");
-		}
+		} 
 		softassert.assertAll();
 		extentTest.info("Validate_Invalid_Xapth Completed");
 
@@ -101,13 +105,22 @@ public class ParallelTest extends SeleniumUtilities {
 		if (homepage.isDisplayed() == true) {
 			System.out.println("execution  3" + Thread.currentThread().getId() + "Passed");
 			softassert.assertEquals(homepage.getText(), "Find a Docto");
-			getScreenshot(getDriver(), "Find a Doctor_screen");
+			getScreenshot(getDriver(), "Validate_Text_on_WebPage_Passed");
 
 		} else {
-			getScreenshot(getDriver(), "Find a Doctor_screen");
+			
 		}
 		softassert.assertAll();
 		extentTest.info("Validate_Text_on_WebPage Completed");
+	}
+	
+	@AfterMethod
+	public void teardown(ITestResult result) throws IOException
+	{
+		if(ITestResult.FAILURE==result.getStatus())
+		{
+			getScreenshot(getDriver(),result.getMethod().getMethodName()+"Failed");
+		}
 	}
 
 }
