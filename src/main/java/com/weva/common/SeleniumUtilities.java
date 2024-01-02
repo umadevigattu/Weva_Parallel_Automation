@@ -62,7 +62,7 @@ public class SeleniumUtilities extends Basetest implements IDriverFactory {
 		EnterText("email", LocatorType.name, username);
 		extentTest.info("Entered "+username+" as Username " );
 		extentTest.info("Enter "+password+" as Password " );
-		EnterText("password ", LocatorType.name, password);
+		EnterText("password", LocatorType.name, password);
 		extentTest.info("Entered "+password+" as Password " );
 		Thread.sleep(Constants.SHORT_WAIT);
 		extentTest.info("Click on Login button");
