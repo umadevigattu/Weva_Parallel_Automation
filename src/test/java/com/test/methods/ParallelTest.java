@@ -2,7 +2,6 @@ package com.test.methods;
 
 import java.io.IOException;
 
-import org.checkerframework.common.reflection.qual.GetMethod;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,9 +12,9 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.aventstack.extentreports.markuputils.Markup;
+import com.relevantcodes.extentreports.LogStatus;
 import com.weva.common.SeleniumUtilities;
-
-import groovyjarjarantlr4.v4.misc.EscapeSequenceParsing.Result;
 
 @Listeners(com.weva.common.ExtentReportListeners.class)
 public class ParallelTest extends SeleniumUtilities {
@@ -25,7 +24,6 @@ public class ParallelTest extends SeleniumUtilities {
 	@BeforeMethod
 
 	public void setUp() {
-
 		CreateWebDriver(BrowserType.chrome);
 
 	}
@@ -51,7 +49,7 @@ public class ParallelTest extends SeleniumUtilities {
 	public void Blank_UserName_Valid_Password() throws Exception {
 		System.out.println(Thread.currentThread().getId());
 		Weva_login("", "Test@1234");
-		WebDriverWait wait=new WebDriverWait(getDriver(), 3);
+		WebDriverWait wait = new WebDriverWait(getDriver(), 3);
 		WebElement emailErrormessage = getDriver().findElement(By.xpath("//p[text()='Email is required!']"));
 		if (emailErrormessage.isDisplayed() == true) {
 			softassert.assertEquals(emailErrormessage.getText(), "Email is required!");
@@ -91,7 +89,7 @@ public class ParallelTest extends SeleniumUtilities {
 			System.out.println("execution 2 " + Thread.currentThread().getId() + "Passed");
 			getScreenshot(getDriver(), "Validate_Invalid_Xapth_Passed");
 
-		} 
+		}
 		softassert.assertAll();
 		extentTest.info("Validate_Invalid_Xapth Completed");
 
@@ -108,18 +106,17 @@ public class ParallelTest extends SeleniumUtilities {
 			getScreenshot(getDriver(), "Validate_Text_on_WebPage_Passed");
 
 		} else {
-			
+
 		}
 		softassert.assertAll();
 		extentTest.info("Validate_Text_on_WebPage Completed");
 	}
-	
+
 	@AfterMethod
-	public void teardown(ITestResult result) throws IOException
-	{
-		if(ITestResult.FAILURE==result.getStatus())
-		{
-			getScreenshot(getDriver(),result.getMethod().getMethodName()+"Failed");
+	public void teardown(ITestResult result) throws IOException {
+		if (ITestResult.FAILURE == result.getStatus()) {
+			String screenshotPath = getScreenshot(getDriver(), result.getMethod().getMethodName() + "Failed");
+			extentTest.addScreenCaptureFromPath(screenshotPath);
 		}
 	}
 
